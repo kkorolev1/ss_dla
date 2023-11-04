@@ -57,7 +57,7 @@ class LibrispeechMixesDataset(BaseDataset):
 
 
     def _get_or_load_index(self, part, mixer_config):
-        index_path = mixer_config.get("index_path", self._data_dir / f"{part}_mixed_index.json")
+        index_path = Path(mixer_config.get("index_path", self._data_dir / f"{part}_mixed_index.json"))
         if index_path.exists():
             with index_path.open() as f:
                 index = json.load(f)
@@ -92,7 +92,7 @@ class LibrispeechMixesDataset(BaseDataset):
         # Download Librispeech if it doesn't exist
         if not split_dir.exists():
             self._load_part(part)
-        mixes_out_folder = mixer_config.get("out_folder", self._data_dir / f"{part}-mixed")
+        mixes_out_folder = Path(mixer_config.get("out_folder", self._data_dir / f"{part}-mixed"))
         if not mixes_out_folder.exists():
             self._create_mixes(split_dir, mixes_out_folder, mixer_config)
         refs = np.array(sorted(glob(os.path.join(mixes_out_folder, '*-ref.wav'))), dtype=object)
