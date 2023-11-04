@@ -19,9 +19,6 @@
   "arch": {
     "type": "SpexPlus",
     "args": {
-      "encoder_out_channels": 64,
-      "stem_channels": [64, 128],
-      "speaker_channels": 64
     }
   },
   "data": {
@@ -35,7 +32,7 @@
             "part": "train-clean-100",
             "data_dir": "/kaggle/input/librispeech/train-clean-100/LibriSpeech",
             "mixer": {
-              "nfiles": 10,
+              "nfiles": 10000,
               "test": false,
               "index_path": "/kaggle/working/ss_dla/train-clean-100-mixed-index.json",
               "out_folder": "/kaggle/working/ss_dla/train-clean-100-mixed"
@@ -54,7 +51,7 @@
             "part": "dev-clean",
             "data_dir": "/kaggle/input/librispeech/dev-clean/LibriSpeech",
             "mixer": {
-              "nfiles": 10,
+              "nfiles": 10000,
               "test": true,
               "index_path": "/kaggle/working/ss_dla/dev-clean-mixed-index.json",
               "out_folder": "/kaggle/working/ss_dla/dev-clean-mixed"
