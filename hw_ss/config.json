@@ -33,7 +33,7 @@
           "type": "LibrispeechMixesDataset",
           "args": {
             "part": "train-clean-100",
-            "data_dir": "/kaggle/input/librispeech/train-clean-100/Librispeech",
+            "data_dir": "/kaggle/input/librispeech/train-clean-100/LibriSpeech",
             "mixer": {
               "nfiles": 10,
               "test": false,
@@ -52,7 +52,7 @@
           "type": "LibrispeechMixesDataset",
           "args": {
             "part": "dev-clean",
-            "data_dir": "/kaggle/input/librispeech/dev-clean/Librispeech",
+            "data_dir": "/kaggle/input/librispeech/dev-clean/LibriSpeech",
             "mixer": {
               "nfiles": 10,
               "test": true,
