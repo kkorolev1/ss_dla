@@ -1,0 +1,108 @@
+{
+  "name": "default_config",
+  "n_gpu": 1,
+  "preprocessing": {
+    "sr": 16000,
+    "spectrogram": {
+      "type": "MelSpectrogram",
+      "args": {
+      }
+    },
+    "log_spec": true
+  },
+  "augmentations": {
+    "wave": [
+    ],
+    "spectrogram": [
+    ]
+  },
+  "arch": {
+    "type": "SpexPlus",
+    "args": {
+      "encoder_out_channels": 64,
+      "stem_channels": [64, 128],
+      "speaker_channels": 64
+    }
+  },
+  "data": {
+    "train": {
+      "batch_size": 3,
+      "num_workers": 5,
+      "datasets": [
+        {
+          "type": "LibrispeechMixesDataset",
+          "args": {
+            "part": "train-clean-100",
+            "limit": 10,
+            "mixer": {
+              "nfiles": 10,
+              "test": false
+            }
+          }
+        }
+      ]
+    },
+    "val": {
+      "batch_size": 3,
+      "num_workers": 5,
+      "datasets": [
+        {
+          "type": "LibrispeechMixesDataset",
+          "args": {
+            "part": "train-clean-100",
+            "limit": 10,
+            "mixer": {
+              "nfiles": 10,
+              "test": true
+            }
+          }
+        }
+      ]
+    }
+  },
+  "optimizer": {
+    "type": "Adam",
+    "args": {
+      "lr": 1e-3
+    }
+  },
+  "loss": {
+    "type": "SpexPlusLoss",
+    "args": {
+    }
+  },
+  "metrics": [
+    {
+      "type": "SISDRMetric",
+      "args": {
+        "name": "SI-SDR"
+      }
+    },
+    {
+      "type": "AccuracyMetric",
+      "args": {
+        "name": "Head Accuracy"
+      }
+    }
+  ],
+  "lr_scheduler": {
+    "type": "ExponentialLR",
+    "args": {
+      "gamma": 0.99
+    }
+  },
+  "trainer": {
+    "epochs": 40,
+    "save_dir": "saved/",
+    "save_period": 5,
+    "verbosity": 2,
+    "monitor": "min val_loss",
+    "early_stop": 100,
+    "visualize": "wandb",
+    "wandb_project": "ss_project",
+    "wandb_run_name": "one_batch_test",
+    "len_epoch": 10,
+    "grad_norm_clip": 20,
+    "fine_tune": false
+  }
+}
