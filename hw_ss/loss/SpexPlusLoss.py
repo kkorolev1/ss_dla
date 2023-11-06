@@ -19,7 +19,7 @@ class SpexPlusLoss(nn.Module):
         self.eps = eps
     
 
-    def forward(self, mix_short, mix_middle, mix_long, speaker_logits, speaker_id, target, **kwargs):
+    def forward(self, is_train, mix_short, mix_middle, mix_long, speaker_logits, speaker_id, target, **kwargs):
         target = to_zero_mean(target.squeeze(1))
 
         mix_short = to_zero_mean(mix_short.squeeze(1))
@@ -32,6 +32,9 @@ class SpexPlusLoss(nn.Module):
 
         sisdr_loss = (-(1 - self.middle_scale - self.long_scale) * sisdr_short.sum() -
                      self.middle_scale * sisdr_middle.sum() - self.long_scale * sisdr_long.sum()) / mix_short.shape[0]
+        
+        if not is_train:
+            return sisdr_loss
+        
         ce_loss = F.cross_entropy(speaker_logits, speaker_id)
-
         return sisdr_loss + self.ce_scale * ce_loss

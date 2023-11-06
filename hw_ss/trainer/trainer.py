@@ -182,7 +182,7 @@ class Trainer(BaseTrainer):
             self.optimizer.zero_grad()
         outputs = self.model(**batch)
         batch.update(outputs)
-        batch["loss"] = self.criterion(**batch)
+        batch["loss"] = self.criterion(is_train, **batch)
         if is_train:
             batch["loss"].backward()
             self._clip_grad_norm()
