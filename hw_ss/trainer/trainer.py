@@ -228,7 +228,7 @@ class Trainer(BaseTrainer):
             total = self.len_epoch
         return base.format(current, total, 100.0 * current / total)
 
-    def _normalize_audio(self, extracted_audio, sr=16000, target_loudness=-29):
+    def _normalize_audio(self, extracted_audio, sr=16000, target_loudness=-23):
         meter = pyln.Meter(sr)
         extracted_louds = meter.integrated_loudness(extracted_audio)
         return pyln.normalize.loudness(extracted_audio, extracted_louds, target_loudness)
