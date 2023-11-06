@@ -1,6 +1,10 @@
 import torch
-from torch.optim.lr_scheduler import ReduceLROnPlateau
 import math
+
+
+class ReduceLROnPlateau(torch.optim.lr_scheduler.ReduceLROnPlateau):
+    def get_last_lr(self):
+        return [self.optimizer.param_groups[0]['lr']]
 
 
 class TransformerLrScheduler:
