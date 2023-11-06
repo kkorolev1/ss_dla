@@ -59,9 +59,11 @@ class LibrispeechMixesDataset(BaseDataset):
     def _get_or_load_index(self, part, mixer_config):
         index_path = Path(mixer_config.get("index_path", self._data_dir / f"{part}-mixed-index.json"))
         if index_path.exists():
+            logger.debug(f"Found existing index at {index_path}")
             with index_path.open() as f:
                 index = json.load(f)
         else:
+            logger.debug(f"Creating index at {index_path}")
             index = self._create_index(part, mixer_config)
             with index_path.open("w") as f:
                 json.dump(index, f, indent=2)
