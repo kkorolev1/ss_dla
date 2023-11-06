@@ -30,8 +30,9 @@
           "type": "LibrispeechMixesDataset",
           "args": {
             "part": "train-clean-100",
+            "limit": 3,
             "mixer": {
-              "nfiles": 15000,
+              "nfiles": 10000,
               "test": false
             }
           }
@@ -45,7 +46,8 @@
         {
           "type": "LibrispeechMixesDataset",
           "args": {
-            "part": "dev-clean",
+            "part": "test-clean",
+            "limit": 3,
             "mixer": {
               "nfiles": 3000,
               "test": true
@@ -97,7 +99,7 @@
     "wandb_project": "ss_project",
     "wandb_run_name": "one_batch_test",
     "len_epoch": 10,
-    "grad_norm_clip": 20,
+    "grad_norm_clip": 100,
     "fine_tune": false
   }
 }

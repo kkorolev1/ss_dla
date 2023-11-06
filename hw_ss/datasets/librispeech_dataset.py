@@ -34,11 +34,10 @@ class LibrispeechMixesDataset(BaseDataset):
 
         if data_dir is None:
             data_dir = ROOT_PATH / "data" / "datasets" / "librispeech"
-            data_dir.mkdir(exist_ok=True, parents=True)
         self._data_dir = Path(data_dir)
         index = self._get_or_load_index(part, mixer)
-        self.num_speakers = self._count_speakers(index)
-        super().__init__(index, *args, **kwargs)
+        self.num_speakers = self._count_speakers(index["data"])
+        super().__init__(index["root_path"], index["data"], *args, **kwargs)
 
 
     def _count_speakers(self, index):
@@ -46,6 +45,7 @@ class LibrispeechMixesDataset(BaseDataset):
 
 
     def _load_part(self, part):
+        self._data_dir.mkdir(exist_ok=True, parents=True)
         arch_path = self._data_dir / f"{part}.tar.gz"
         print(f"Loading part {part}")
         download_file(URL_LINKS[part], arch_path)
@@ -57,7 +57,7 @@ class LibrispeechMixesDataset(BaseDataset):
 
 
     def _get_or_load_index(self, part, mixer_config):
-        index_path = Path(mixer_config.get("index_path", self._data_dir / f"{part}_mixed_index.json"))
+        index_path = Path(mixer_config.get("index_path", self._data_dir / f"{part}-mixed-index.json"))
         if index_path.exists():
             with index_path.open() as f:
                 index = json.load(f)
@@ -88,12 +88,12 @@ class LibrispeechMixesDataset(BaseDataset):
 
 
     def _create_index(self, part, mixer_config):
-        split_dir = self._data_dir / part
-        # Download Librispeech if it doesn't exist
-        if not split_dir.exists():
-            self._load_part(part)
         mixes_out_folder = Path(mixer_config.get("out_folder", self._data_dir / f"{part}-mixed"))
         if not mixes_out_folder.exists():
+            split_dir = self._data_dir / part
+            # Download Librispeech if it doesn't exist
+            if not split_dir.exists():
+                self._load_part(part)
             self._create_mixes(split_dir, mixes_out_folder, mixer_config)
         refs = np.array(sorted(glob(os.path.join(mixes_out_folder, '*-ref.wav'))), dtype=object)
         mixes = np.array(sorted(glob(os.path.join(mixes_out_folder, '*-mixed.wav'))), dtype=object)
@@ -107,16 +107,19 @@ class LibrispeechMixesDataset(BaseDataset):
         speaker_ids = speaker_ids[sorted_indices]
         speaker_ids_mapped = [0] + np.cumsum((speaker_ids[1:] > speaker_ids[:-1]).astype(int)).tolist()
 
-        index = []
+        data = []
 
         for ref, mix, target, speaker_id in zip(refs, mixes, targets, speaker_ids_mapped):
-            index.append(
+            data.append(
                 {
-                    "reference": ref,
-                    "mix": mix,
-                    "target": target,
+                    "reference": os.path.basename(ref),
+                    "mix": os.path.basename(mix),
+                    "target": os.path.basename(target),
                     "speaker_id": speaker_id
                 }
             )
 
-        return index
+        return {
+            "root_path": str(mixes_out_folder),
+            "data": data
+        }
