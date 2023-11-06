@@ -67,12 +67,12 @@ class SpexPlus(nn.Module):
 
 
     def __str__(self):
-            """
-            Model prints with number of trainable parameters
-            """
-            model_parameters = filter(lambda p: p.requires_grad, self.parameters())
-            params = sum([np.prod(p.size()) for p in model_parameters])
-            return super().__str__() + "\nTrainable parameters: {}".format(params)
+        """
+        Model prints with number of trainable parameters
+        """
+        model_parameters = filter(lambda p: p.requires_grad, self.parameters())
+        params = sum([np.prod(p.size()) for p in model_parameters])
+        return super().__str__() + "\nTrainable parameters: {}".format(params)
     
 
     def _reference_length_after_encoder(self, reference_length):

@@ -9,6 +9,7 @@ import torch.nn.functional as F
 from torch.nn.utils import clip_grad_norm_
 from torchvision.transforms import ToTensor
 from tqdm import tqdm
+import pyloudnorm as pyln
 
 from hw_ss.base import BaseTrainer
 from hw_ss.logger.utils import plot_spectrogram_to_buf
@@ -110,6 +111,7 @@ class Trainer(BaseTrainer):
             clip_grad_norm_(
                 self.model.parameters(), self.config["trainer"]["grad_norm_clip"]
             )
+    
     def _train_epoch(self, epoch):
         """
         Training logic for an epoch
@@ -226,6 +228,11 @@ class Trainer(BaseTrainer):
             total = self.len_epoch
         return base.format(current, total, 100.0 * current / total)
 
+    def _normalize_audio(self, extracted_audio, sr=16000, target_loudness=-29):
+        meter = pyln.Meter(sr)
+        extracted_louds = meter.integrated_loudness(extracted_audio)
+        return pyln.normalize.loudness(extracted_audio, extracted_louds, target_loudness)
+
     def _log_predictions(
             self,
             reference,
@@ -244,9 +251,10 @@ class Trainer(BaseTrainer):
         rows = {}
         idx = 0
         for r, m, ms, mm, ml, t in zip(reference, mix, mix_short, mix_middle, mix_long, target):
+            ms_norm = self._normalize_audio(ms.squeeze(0).detach().cpu().numpy())
             rows[idx] = {
                 "mix": self.writer.wandb.Audio(m.squeeze(0).detach().cpu().numpy(), sample_rate=16000),
-                "predicted_short": self.writer.wandb.Audio(ms.squeeze(0).detach().cpu().numpy(), sample_rate=16000),
+                "predicted_short": self.writer.wandb.Audio(ms_norm, sample_rate=16000),
                 "target": self.writer.wandb.Audio(t.squeeze(0).detach().cpu().numpy(), sample_rate=16000)
             }
             idx += 1
