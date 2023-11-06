@@ -1,5 +1,5 @@
 import torch
-from torch.optim.lr_scheduler import OneCycleLR, ExponentialLR
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 import math
 
 

@@ -56,6 +56,7 @@ class Trainer(BaseTrainer):
             "loss", *[m.name for m in self.metrics], writer=self.writer
         )
         self.fine_tune = config["trainer"].get("fine_tune", False)
+        self.scheduler_config = config["trainer"].get("scheduler", None)
 
         if config.resume is not None:
             self._resume_checkpoint(config.resume)
@@ -167,6 +168,12 @@ class Trainer(BaseTrainer):
             val_log = self._evaluation_epoch(epoch, part, dataloader)
             log.update(**{f"{part}_{name}": value for name, value in val_log.items()})
 
+        if self.lr_scheduler is not None and self.scheduler_config.get("epoch_based", False):
+            if self.scheduler_config.get("requires_loss", True):
+                self.lr_scheduler.step(log["val_loss"])
+            else:
+                self.lr_scheduler.step()
+
         return log
 
     def process_batch(self, batch, batch_idx, is_train: bool, metrics: MetricTracker):
@@ -180,7 +187,7 @@ class Trainer(BaseTrainer):
             batch["loss"].backward()
             self._clip_grad_norm()
             self.optimizer.step()
-            if self.lr_scheduler is not None:
+            if self.lr_scheduler is not None and not self.scheduler_config.get("epoch_based", False):
                 self.lr_scheduler.step()
 
         metrics.update("loss", batch["loss"].item())
