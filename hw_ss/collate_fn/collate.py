@@ -17,12 +17,11 @@ def collate_fn(dataset_items: List[dict]):
                                                 for item in dataset_items], batch_first=True
                                               ).unsqueeze(1)
     result_batch["reference_length"] = torch.tensor([item["reference"].shape[-1] for item in dataset_items])
-    result_batch["mix"] = pad_sequence([item["mix"].squeeze(0)
-                                            for item in dataset_items], batch_first=True
-                                          ).unsqueeze(1)
-    result_batch["target"] = pad_sequence([item["target"].squeeze(0)
-                                            for item in dataset_items], batch_first=True
-                                          ).unsqueeze(1)
+    mix = [item["mix"].squeeze(0) for item in dataset_items]
+    target = [item["target"].squeeze(0) for item in dataset_items]
+    mix_target_padded = pad_sequence(mix + target, batch_first=True).unsqueeze(1)
+    result_batch["mix"] = mix_target_padded[:len(mix)]
+    result_batch["target"] = mix_target_padded[len(mix):]
     result_batch["speaker_id"] = torch.tensor([item["speaker_id"] for item in dataset_items])
     result_batch["mix_path"] = [item["mix_path"] for item in dataset_items]
     return result_batch
