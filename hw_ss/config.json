@@ -23,14 +23,14 @@
   },
   "data": {
     "train": {
-      "batch_size": 3,
+      "batch_size": 8,
       "num_workers": 5,
       "datasets": [
         {
           "type": "LibrispeechMixesDataset",
           "args": {
             "part": "train-clean-100",
-            "limit": 3,
+            "limit": 10000,
             "mixer": {
               "index_path": "/kaggle/working/ss_dla/train-clean-100-mixed-index.json",
               "out_folder": "/kaggle/input/librispeech-mixed/librispeech-mixed/train-clean-100-mixed"
@@ -40,14 +40,13 @@
       ]
     },
     "val": {
-      "batch_size": 3,
+      "batch_size": 8,
       "num_workers": 5,
       "datasets": [
         {
           "type": "LibrispeechMixesDataset",
           "args": {
-            "part": "train-clean-100",
-            "limit": 3,
+            "part": "test-clean",
             "mixer": {
               "index_path": "/kaggle/working/ss_dla/test-clean-mixed-index.json",
               "out_folder": "/kaggle/input/librispeech-mixed/librispeech-mixed/train-clean-100-mixed"
@@ -110,7 +109,7 @@
     "early_stop": 100,
     "visualize": "wandb",
     "wandb_project": "ss_project",
-    "wandb_run_name": "kaggle_one_batch_test",
+    "wandb_run_name": "spex_plus",
     "len_epoch": 100,
     "grad_norm_clip": 100,
     "fine_tune": false,
