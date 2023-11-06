@@ -13,7 +13,7 @@ from tqdm import tqdm
 from hw_ss.base import BaseTrainer
 from hw_ss.logger.utils import plot_spectrogram_to_buf
 from hw_ss.utils import inf_loop, MetricTracker
-from hw_ss.model import normalize_audio
+from hw_ss.utils import normalize_audio
 
 
 class Trainer(BaseTrainer):
@@ -243,6 +243,7 @@ class Trainer(BaseTrainer):
             mix_middle,
             mix_long,
             target,
+            mix_path,
             is_train,
             examples_to_log=10,
             *args,
@@ -251,14 +252,12 @@ class Trainer(BaseTrainer):
         if self.writer is None:
             return
         rows = {}
-        idx = 0
-        for r, m, ms, mm, ml, t in zip(reference, mix, mix_short, mix_middle, mix_long, target):
-            rows[idx] = {
-                "mix": self.writer.wandb.Audio(normalize_audio(m.squeeze(0)).detach().cpu().numpy(), sample_rate=16000),
+        for r, m, ms, mm, ml, t, mp in zip(reference, mix, mix_short, mix_middle, mix_long, target, mix_path):
+            rows[mp] = {
+                "mix": self.writer.wandb.Audio(normalize_audio(m.squeeze(0).detach().cpu().numpy()), sample_rate=16000),
                 "predicted_short": self.writer.wandb.Audio(ms.squeeze(0).detach().cpu().numpy(), sample_rate=16000),
                 "target": self.writer.wandb.Audio(t.squeeze(0).detach().cpu().numpy(), sample_rate=16000)
             }
-            idx += 1
 
         self.writer.add_table("predictions", pd.DataFrame.from_dict(rows, orient="index"))
 

@@ -45,7 +45,8 @@ class BaseDataset(Dataset):
             "reference": self.load_audio(data_dict["reference"]),
             "mix": self.load_audio(data_dict["mix"]),
             "target": self.load_audio(data_dict["target"]),
-            "speaker_id": data_dict["speaker_id"]
+            "speaker_id": data_dict["speaker_id"],
+            "mix_path": os.path.join(self.root_path, data_dict["mix"])
         }
 
     @staticmethod

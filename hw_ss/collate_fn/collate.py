@@ -24,4 +24,5 @@ def collate_fn(dataset_items: List[dict]):
                                             for item in dataset_items], batch_first=True
                                           ).unsqueeze(1)
     result_batch["speaker_id"] = torch.tensor([item["speaker_id"] for item in dataset_items])
+    result_batch["mix_path"] = [item["mix_path"] for item in dataset_items]
     return result_batch
