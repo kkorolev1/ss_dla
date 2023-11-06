@@ -1,6 +1,6 @@
 {
   "name": "default_config",
-  "n_gpu": 1,
+  "n_gpu": 0,
   "preprocessing": {
     "sr": 16000,
     "spectrogram": {
@@ -46,7 +46,7 @@
         {
           "type": "LibrispeechMixesDataset",
           "args": {
-            "part": "test-clean",
+            "part": "train-clean-100",
             "limit": 3,
             "mixer": {
               "nfiles": 3000,
@@ -58,9 +58,10 @@
     }
   },
   "optimizer": {
-    "type": "Adam",
+    "type": "AdamW",
     "args": {
-      "lr": 1e-3
+      "lr": 1e-3,
+      "weight_decay": 1e-5
     }
   },
   "loss": {
@@ -80,12 +81,24 @@
       "args": {
         "name": "Head Accuracy"
       }
+    },
+    {
+      "type": "PESQMetric",
+      "args": {
+        "name": "PESQ",
+        "sample_rate": 16000,
+        "mode": "wb"
+      }
     }
   ],
   "lr_scheduler": {
-    "type": "ExponentialLR",
+    "type": "ReduceLROnPlateau",
     "args": {
-      "gamma": 0.99
+      "mode": "min",
+      "factor": 0.5,
+      "patience": 2,
+      "min_lr": 0.0,
+      "verbose": true
     }
   },
   "trainer": {
@@ -98,8 +111,12 @@
     "visualize": "wandb",
     "wandb_project": "ss_project",
     "wandb_run_name": "one_batch_test",
-    "len_epoch": 10,
+    "len_epoch": 1,
     "grad_norm_clip": 100,
-    "fine_tune": false
+    "fine_tune": false,
+    "scheduler": {
+      "requires_loss": true,
+      "epoch_based": true
+    }
   }
 }

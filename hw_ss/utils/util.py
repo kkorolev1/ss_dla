@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pandas as pd
 import torch
+import pyloudnorm as pyln
 
 from pynvml import *
 
@@ -119,3 +120,8 @@ def length_to_mask(length, max_len=None, dtype=None):
     if dtype is not None:
         mask = torch.as_tensor(mask, dtype=dtype, device=length.device)
     return mask
+
+def normalize_audio(extracted_audio, sr=16000, target_loudness=-23):
+    meter = pyln.Meter(sr)
+    extracted_louds = meter.integrated_loudness(extracted_audio)
+    return pyln.normalize.loudness(extracted_audio, extracted_louds, target_loudness)

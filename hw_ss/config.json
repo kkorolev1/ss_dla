@@ -81,6 +81,14 @@
       "args": {
         "name": "Head Accuracy"
       }
+    },
+    {
+      "type": "PESQMetric",
+      "args": {
+        "name": "PESQ",
+        "sample_rate": 16000,
+        "mode": "wb"
+      }
     }
   ],
   "lr_scheduler": {
