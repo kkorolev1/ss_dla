@@ -111,7 +111,7 @@
     "visualize": "wandb",
     "wandb_project": "ss_project",
     "wandb_run_name": "spex_plus",
-    "len_epoch": 100,
+    "len_epoch": 700,
     "grad_norm_clip": 100,
     "fine_tune": false,
     "scheduler": {
