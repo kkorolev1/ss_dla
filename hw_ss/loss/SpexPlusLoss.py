@@ -7,7 +7,7 @@ from hw_ss.utils import length_to_mask
 
 
 def to_zero_mean(tensor):
-    return tensor - tensor.mean(dim=-1)
+    return tensor - tensor.mean(dim=-1, keepdim=True)
 
 
 class SpexPlusLoss(nn.Module):
