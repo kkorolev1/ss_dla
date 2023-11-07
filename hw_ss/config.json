@@ -19,6 +19,9 @@
   "arch": {
     "type": "SpexPlus",
     "args": {
+      "short_kernel_size": 40,
+      "middle_kernel_size": 160,
+      "long_kernel_size": 320
     }
   },
   "data": {
@@ -111,12 +114,13 @@
     "visualize": "wandb",
     "wandb_project": "ss_project",
     "wandb_run_name": "spex_plus",
-    "len_epoch": 700,
+    "len_epoch": 5000,
     "grad_norm_clip": 100,
     "fine_tune": false,
     "scheduler": {
       "requires_loss": true,
       "epoch_based": true
-    }
+    },
+    "grad_accum_iters": 2
   }
 }
