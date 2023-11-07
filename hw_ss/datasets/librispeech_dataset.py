@@ -91,6 +91,7 @@ class LibrispeechMixesDataset(BaseDataset):
 
     def _create_index(self, part, mixer_config):
         mixes_out_folder = Path(mixer_config.get("out_folder", self._data_dir / f"{part}-mixed"))
+
         if not mixes_out_folder.exists():
             split_dir = self._data_dir / part
             # Download Librispeech if it doesn't exist
@@ -113,9 +114,9 @@ class LibrispeechMixesDataset(BaseDataset):
         for ref, mix, target, speaker_id in zip(refs, mixes, targets, speaker_ids_mapped):
             index.append(
                 {
-                    "reference": os.path.basename(ref),
-                    "mix": os.path.basename(mix),
-                    "target": os.path.basename(target),
+                    "reference": ref,
+                    "mix": mix,
+                    "target": target,
                     "speaker_id": speaker_id
                 }
             )
