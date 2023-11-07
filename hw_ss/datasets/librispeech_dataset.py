@@ -109,10 +109,9 @@ class LibrispeechMixesDataset(BaseDataset):
         speaker_ids = speaker_ids[sorted_indices]
         speaker_ids_mapped = [0] + np.cumsum((speaker_ids[1:] > speaker_ids[:-1]).astype(int)).tolist()
 
-        data = []
-
+        index = []
         for ref, mix, target, speaker_id in zip(refs, mixes, targets, speaker_ids_mapped):
-            data.append(
+            index.append(
                 {
                     "reference": os.path.basename(ref),
                     "mix": os.path.basename(mix),
@@ -120,8 +119,4 @@ class LibrispeechMixesDataset(BaseDataset):
                     "speaker_id": speaker_id
                 }
             )
-
-        return {
-            "root_path": str(mixes_out_folder),
-            "data": data
-        }
+        return index
