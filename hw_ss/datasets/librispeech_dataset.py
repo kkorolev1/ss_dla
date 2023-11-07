@@ -36,12 +36,7 @@ class LibrispeechMixesDataset(BaseDataset):
             data_dir = ROOT_PATH / "data" / "datasets" / "librispeech"
         self._data_dir = Path(data_dir)
         index = self._get_or_load_index(part, mixer)
-        self.num_speakers = self._count_speakers(index)
         super().__init__(index, *args, **kwargs)
-
-
-    def _count_speakers(self, index):
-        return max([item["speaker_id"] for item in index]) + 1
 
 
     def _load_part(self, part):

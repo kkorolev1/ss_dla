@@ -32,6 +32,7 @@ class BaseDataset(Dataset):
 
         self._assert_index_is_valid(index)
         index = self._filter_records_from_dataset(index, max_audio_length, limit)
+        self.num_speakers = max([item["speaker_id"] for item in index]) + 1
         # it's a good idea to sort index by audio length
         # It would be easier to write length-based batch samplers later
         #index = self._sort_index(index)
@@ -103,8 +104,8 @@ class BaseDataset(Dataset):
             )
 
         if limit is not None:
-            random.seed(42)  # best seed for deep learning
-            random.shuffle(index)
+            #random.seed(42)  # best seed for deep learning
+            #random.shuffle(index)
             index = index[:limit]
         return index
 
