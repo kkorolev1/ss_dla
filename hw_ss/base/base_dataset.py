@@ -18,7 +18,6 @@ logger = logging.getLogger(__name__)
 class BaseDataset(Dataset):
     def __init__(
             self,
-            root_path,
             index,
             config_parser: ConfigParser,
             wave_augs=None,
@@ -31,7 +30,6 @@ class BaseDataset(Dataset):
         self.spec_augs = spec_augs
         self.log_spec = config_parser["preprocessing"]["log_spec"]
 
-        self.root_path = root_path
         self._assert_index_is_valid(index)
         index = self._filter_records_from_dataset(index, max_audio_length, limit)
         # it's a good idea to sort index by audio length
@@ -46,7 +44,7 @@ class BaseDataset(Dataset):
             "mix": self.load_audio(data_dict["mix"]),
             "target": self.load_audio(data_dict["target"]),
             "speaker_id": data_dict["speaker_id"],
-            "mix_path": os.path.join(self.root_path, data_dict["mix"])
+            "mix_path": data_dict["mix"]
         }
 
     @staticmethod
@@ -57,7 +55,7 @@ class BaseDataset(Dataset):
         return len(self._index)
 
     def load_audio(self, path):
-        audio_tensor, sr = torchaudio.load(os.path.join(self.root_path, path))
+        audio_tensor, sr = torchaudio.load(path)
         audio_tensor = audio_tensor[0:1, :]  # remove all channels but the first
         target_sr = self.config_parser["preprocessing"]["sr"]
         if sr != target_sr:
