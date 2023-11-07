@@ -1,0 +1,123 @@
+{
+  "name": "default_config",
+  "n_gpu": 1,
+  "preprocessing": {
+    "sr": 16000,
+    "spectrogram": {
+      "type": "MelSpectrogram",
+      "args": {
+      }
+    },
+    "log_spec": true
+  },
+  "augmentations": {
+    "wave": [
+    ],
+    "spectrogram": [
+    ]
+  },
+  "arch": {
+    "type": "SpexPlus",
+    "args": {
+    }
+  },
+  "data": {
+    "train": {
+      "batch_size": 5,
+      "num_workers": 5,
+      "datasets": [
+        {
+          "type": "LibrispeechMixesDataset",
+          "args": {
+            "part": "train-clean-100",
+            "limit": 10000,
+            "mixer": {
+              "index_path": "ss_dla/test-clean-mixed-index.json",
+              "out_folder": "/home/jupyter/mnt/datasets/librispeech-mixed/librispeech-mixed/train-clean-100-mixed"
+            }
+          }
+        }
+      ]
+    },
+    "val": {
+      "batch_size": 5,
+      "num_workers": 5,
+      "datasets": [
+        {
+          "type": "LibrispeechMixesDataset",
+          "args": {
+            "part": "test-clean",
+            "limit": 1000,
+            "mixer": {
+              "index_path": "ss_dla/test-clean-mixed-index.json",
+              "out_folder": "/home/jupyter/mnt/datasets/librispeech-mixed/librispeech-mixed/train-clean-100-mixed"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "optimizer": {
+    "type": "AdamW",
+    "args": {
+      "lr": 1e-3,
+      "weight_decay": 1e-5
+    }
+  },
+  "loss": {
+    "type": "SpexPlusLoss",
+    "args": {
+    }
+  },
+  "metrics": [
+    {
+      "type": "SISDRMetric",
+      "args": {
+        "name": "SI-SDR"
+      }
+    },
+    {
+      "type": "AccuracyMetric",
+      "args": {
+        "name": "Head Accuracy"
+      }
+    },
+    {
+      "type": "PESQMetric",
+      "args": {
+        "name": "PESQ",
+        "sample_rate": 16000,
+        "mode": "wb"
+      }
+    }
+  ],
+  "lr_scheduler": {
+    "type": "ReduceLROnPlateau",
+    "args": {
+      "mode": "min",
+      "factor": 0.5,
+      "patience": 2,
+      "min_lr": 0.0,
+      "verbose": true
+    }
+  },
+  "trainer": {
+    "epochs": 100,
+    "save_dir": "saved/",
+    "save_period": 5,
+    "verbosity": 2,
+    "monitor": "min val_loss",
+    "early_stop": 100,
+    "visualize": "wandb",
+    "wandb_project": "ss_project",
+    "wandb_run_name": "spex_plus",
+    "len_epoch": 1000,
+    "grad_norm_clip": 100,
+    "fine_tune": false,
+    "scheduler": {
+      "requires_loss": true,
+      "epoch_based": true
+    },
+    "grad_accum_iters": 2
+  }
+}
