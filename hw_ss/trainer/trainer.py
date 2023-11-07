@@ -253,8 +253,12 @@ class Trainer(BaseTrainer):
         if self.writer is None:
             return
         rows = {}
-        for r, m, ms, mm, ml, t, mp in zip(reference, mix, mix_short, mix_middle, mix_long, target, mix_path):
+        tuples = list(zip(reference, mix, mix_short, target, mix_path))
+        shuffle(tuples)
+
+        for r, m, ms, t, mp in tuples[:examples_to_log]:
             rows[mp] = {
+                "reference": self.writer.wandb.Audio(r.squeeze(0).detach().cpu().numpy(), sample_rate=16000),
                 "mix": self.writer.wandb.Audio(m.squeeze(0).detach().cpu().numpy(), sample_rate=16000),
                 "predicted_short": self.writer.wandb.Audio(normalize_audio(ms.squeeze(0).detach().cpu().numpy()), sample_rate=16000),
                 "target": self.writer.wandb.Audio(t.squeeze(0).detach().cpu().numpy(), sample_rate=16000)
