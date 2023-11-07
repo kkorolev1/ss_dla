@@ -33,7 +33,7 @@
             "limit": 10000,
             "mixer": {
               "index_path": "train-clean-100-mixed-index.json",
-              "out_folder": "/home/jupyter/mnt/datasets/librispeech-mixed/librispeech-mixed/train-clean-100-mixed"
+              "out_folder": "/home/jupyter/mnt/datasets/librispeech-mixed/librispeech-mixed/librispeech-mixed/train-clean-100-mixed"
             }
           }
         }
@@ -50,7 +50,7 @@
             "limit": 1000,
             "mixer": {
               "index_path": "test-clean-mixed-index.json",
-              "out_folder": "/home/jupyter/mnt/datasets/librispeech-mixed/librispeech-mixed/test-clean-mixed"
+              "out_folder": "/home/jupyter/mnt/datasets/librispeech-mixed/librispeech-mixed/librispeech-mixed/test-clean-mixed"
             }
           }
         }
