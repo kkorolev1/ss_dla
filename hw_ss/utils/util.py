@@ -72,9 +72,10 @@ def prepare_device(n_gpu_use):
         )
         n_gpu_use = n_gpu
     if n_gpu_use == 1:
-        device_id = find_device()
-        device = torch.device(f"cuda:{device_id}")
-        list_ids = [device_id]
+        #device_id = find_device()
+        #device = torch.device(f"cuda:{device_id}")
+        device = torch.device(f"cuda")
+        list_ids = [0]
     else:
         device = torch.device(f"cuda" if n_gpu_use > 0 else "cpu")
         list_ids = list(range(n_gpu_use))
