@@ -97,6 +97,7 @@ class SpexPlus(nn.Module):
         for mask_layer, mix_after_encoder in zip(self.masks_layers, mix_tuple):
             masked_mixes.append(mix_after_encoder * mask_layer(mix))
         mix_short, mix_middle, mix_long = self.decoder(*masked_mixes)
+        mix_short = F.pad(mix_short, (0, mix_length - mix_short.shape[-1]))
         speaker_logits = self.speaker_head(reference.squeeze(-1))
         return {
             "mix_short": mix_short,
@@ -104,10 +105,10 @@ class SpexPlus(nn.Module):
             "mix_long": mix_long[:, :, :mix_length],
             "speaker_logits": speaker_logits
         }
- 
+
 # import torch
 # model = SpexPlus()
-# mix = torch.ones((1, 1, 600))
-# reference = torch.ones((1, 1, 600))
-# out = model(mix, reference)
+# mix = torch.ones((3, 1, 3313))
+# reference = torch.ones((3, 1, 600))
+# out = model(mix, reference, torch.ones(3))
 # print([(k, v.shape) for k,v in out.items()])
