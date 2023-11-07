@@ -46,7 +46,7 @@
         {
           "type": "LibrispeechMixesDataset",
           "args": {
-            "part": "train-clean-100",
+            "part": "test-clean",
             "limit": 3,
             "mixer": {
               "nfiles": 3000,

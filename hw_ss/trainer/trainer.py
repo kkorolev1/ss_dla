@@ -57,6 +57,7 @@ class Trainer(BaseTrainer):
         )
         self.fine_tune = config["trainer"].get("fine_tune", False)
         self.scheduler_config = config["trainer"].get("scheduler", None)
+        self.grad_accum_iters = config["trainer"].get("grad_accum_iters", 1)
 
         if config.resume is not None:
             self._resume_checkpoint(config.resume)
@@ -143,7 +144,6 @@ class Trainer(BaseTrainer):
                     continue
                 else:
                     raise e
-            self.train_metrics.update("grad norm", self.get_grad_norm())
             if batch_idx % self.log_step == 0:
                 self.writer.set_step((epoch - 1) * self.len_epoch + batch_idx)
                 self.logger.debug(
@@ -178,17 +178,18 @@ class Trainer(BaseTrainer):
 
     def process_batch(self, batch, batch_idx, is_train: bool, metrics: MetricTracker):
         batch = self.move_batch_to_device(batch, self.device)
-        if is_train:
-            self.optimizer.zero_grad()
         outputs = self.model(**batch)
         batch.update(outputs)
-        batch["loss"] = self.criterion(is_train, **batch)
+        batch["loss"] = self.criterion(is_train, **batch) / self.grad_accum_iters
         if is_train:
             batch["loss"].backward()
-            self._clip_grad_norm()
-            self.optimizer.step()
-            if self.lr_scheduler is not None and not self.scheduler_config.get("epoch_based", False):
-                self.lr_scheduler.step()
+            if (batch_idx + 1) % self.grad_accum_iters == 0 or (batch_idx + 1) == self.len_epoch:
+                self._clip_grad_norm()
+                self.optimizer.step()
+                if self.lr_scheduler is not None and not self.scheduler_config.get("epoch_based", False):
+                    self.lr_scheduler.step()
+                self.train_metrics.update("grad norm", self.get_grad_norm())
+                self.optimizer.zero_grad()
 
         metrics.update("loss", batch["loss"].item())
         for met in self.metrics:
