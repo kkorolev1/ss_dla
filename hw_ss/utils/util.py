@@ -54,31 +54,27 @@ def find_device():
 
     return device
 
-def prepare_device(n_gpu_use):
+def prepare_device(n_gpu_use, logger):
     """
     setup GPU device if available. get gpu device indices which are used for DataParallel
     """
     n_gpu = torch.cuda.device_count()
+    logger.info(f"Num GPUs query: {n_gpu_use}")
+    logger.info(f"Num GPUs available: {n_gpu}")
     if n_gpu_use > 0 and n_gpu == 0:
-        print(
+        logger.info(
             "Warning: There's no GPU available on this machine,"
             "training will be performed on CPU."
         )
         n_gpu_use = 0
     if n_gpu_use > n_gpu:
-        print(
+        logger.info(
             f"Warning: The number of GPU's configured to use is {n_gpu_use}, but only {n_gpu} are "
             "available on this machine."
         )
         n_gpu_use = n_gpu
-    if n_gpu_use == 1:
-        #device_id = find_device()
-        #device = torch.device(f"cuda:{device_id}")
-        device = torch.device(f"cuda")
-        list_ids = [0]
-    else:
-        device = torch.device(f"cuda" if n_gpu_use > 0 else "cpu")
-        list_ids = list(range(n_gpu_use))
+    device = torch.device("cuda" if n_gpu_use > 0 else "cpu")
+    list_ids = list(range(n_gpu_use))
     return device, list_ids
 
 

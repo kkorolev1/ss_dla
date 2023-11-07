@@ -36,7 +36,7 @@ def main(config):
     logger.info(model)
 
     # prepare for (multi-device) GPU training
-    device, device_ids = prepare_device(config["n_gpu"])
+    device, device_ids = prepare_device(config["n_gpu"], logger)
     logger.info(f"Device {device}")
     model = model.to(device)
     if len(device_ids) > 1:
