@@ -110,8 +110,8 @@
     "early_stop": 100,
     "visualize": "wandb",
     "wandb_project": "ss_project",
-    "wandb_run_name": "spex_plus",
-    "len_epoch": 1000,
+    "wandb_run_name": "spex_plus_long_epoch",
+    "len_epoch": 10000,
     "grad_norm_clip": 100,
     "fine_tune": false,
     "scheduler": {
