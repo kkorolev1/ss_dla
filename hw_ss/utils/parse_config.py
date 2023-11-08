@@ -81,6 +81,7 @@ class ConfigParser:
         modification = {
             opt.target: getattr(args, _get_opt_name(opt.flags)) for opt in options
         }
+        config.update({'wandb_key': args.wandb_key})
         return cls(config, resume, modification)
 
     @staticmethod
