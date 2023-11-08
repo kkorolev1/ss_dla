@@ -13,9 +13,5 @@ class PESQMetric(BaseMetric):
 
 
     def __call__(self, mix_short: Tensor, target: Tensor, **kwargs):
-        mix_short = mix_short.squeeze(1).detach().cpu().numpy()
-        normalized_batch = []
-        for x in mix_short:
-            normalized_batch += [normalize_audio(x)]
-        normalized_batch = Tensor(normalized_batch)
-        return self.pesq(normalized_batch.unsqueeze(1), target).item()
+        metric = self.pesq.to(mix_short.device)
+        return metric(normalize_audio(mix_short), target).mean()

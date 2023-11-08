@@ -120,6 +120,6 @@
       "requires_loss": true,
       "epoch_based": true
     },
-    "grad_accum_iters": 2
+    "grad_accum_iters": 1
   }
 }

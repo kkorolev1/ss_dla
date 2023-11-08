@@ -193,7 +193,7 @@ class Trainer(BaseTrainer):
 
         metrics.update("loss", batch["loss"].item())
         for met in self.metrics:
-            metrics.update(met.name, met(**batch))
+            metrics.update(met.name, met(**batch), n=batch["mix"].shape[0])
         return batch
 
     def _evaluation_epoch(self, epoch, part, dataloader):
@@ -260,7 +260,7 @@ class Trainer(BaseTrainer):
             rows[mp] = {
                 "reference": self.writer.wandb.Audio(r.squeeze(0).detach().cpu().numpy(), sample_rate=16000),
                 "mix": self.writer.wandb.Audio(m.squeeze(0).detach().cpu().numpy(), sample_rate=16000),
-                "predicted_short": self.writer.wandb.Audio(normalize_audio(ms.squeeze(0).detach().cpu().numpy()), sample_rate=16000),
+                "predicted_short": self.writer.wandb.Audio(normalize_audio(ms.squeeze(0).detach()).cpu().numpy(), sample_rate=16000),
                 "target": self.writer.wandb.Audio(t.squeeze(0).detach().cpu().numpy(), sample_rate=16000)
             }
 
