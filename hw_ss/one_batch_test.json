@@ -49,8 +49,9 @@
             "part": "test-clean",
             "limit": 3,
             "mixer": {
-              "nfiles": 3000,
-              "test": true
+              "nfiles": 1000,
+              "test": true,
+              "snr_levels": [0]
             }
           }
         }

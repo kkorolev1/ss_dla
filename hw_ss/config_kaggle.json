@@ -19,9 +19,6 @@
   "arch": {
     "type": "SpexPlus",
     "args": {
-      "short_kernel_size": 40,
-      "middle_kernel_size": 160,
-      "long_kernel_size": 320
     }
   },
   "data": {
@@ -33,7 +30,6 @@
           "type": "LibrispeechMixesDataset",
           "args": {
             "part": "train-clean-100",
-            "limit": 10000,
             "mixer": {
               "index_path": "/kaggle/working/ss_dla/train-clean-100-mixed-index.json",
               "out_folder": "/kaggle/input/librispeech-mixed/librispeech-mixed/train-clean-100-mixed"
@@ -50,7 +46,6 @@
           "type": "LibrispeechMixesDataset",
           "args": {
             "part": "test-clean",
-            "limit": 1000,
             "mixer": {
               "index_path": "/kaggle/working/ss_dla/test-clean-mixed-index.json",
               "out_folder": "/kaggle/input/librispeech-mixed/librispeech-mixed/train-clean-100-mixed"
@@ -105,7 +100,7 @@
     }
   },
   "trainer": {
-    "epochs": 40,
+    "epochs": 100,
     "save_dir": "saved/",
     "save_period": 5,
     "verbosity": 2,
@@ -113,14 +108,14 @@
     "early_stop": 100,
     "visualize": "wandb",
     "wandb_project": "ss_project",
-    "wandb_run_name": "spex_plus",
-    "len_epoch": 5000,
+    "wandb_run_name": "spex_plus_new_dataset",
+    "len_epoch": 1000,
     "grad_norm_clip": 100,
     "fine_tune": false,
     "scheduler": {
       "requires_loss": true,
       "epoch_based": true
     },
-    "grad_accum_iters": 2
+    "grad_accum_iters": 1
   }
 }

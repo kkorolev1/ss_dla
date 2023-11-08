@@ -32,8 +32,9 @@
             "part": "train-clean-100",
             "limit": 3,
             "mixer": {
-              "nfiles": 10000,
-              "test": false
+              "nfiles": 7000,
+              "test": false,
+              "snr_levels": [-5, 0, 5]
             }
           }
         }
@@ -49,8 +50,9 @@
             "part": "test-clean",
             "limit": 3,
             "mixer": {
-              "nfiles": 3000,
-              "test": true
+              "nfiles": 1000,
+              "test": true,
+              "snr_levels": [0]
             }
           }
         }

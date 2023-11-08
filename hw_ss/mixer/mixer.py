@@ -93,6 +93,8 @@ class MixtureGenerator:
 
 
     def generate_mixes(self, snr_levels=[0], num_workers=10, update_steps=10, **kwargs):
+        print(kwargs)
+        print(f"snr_levels: {snr_levels}")
         triplets = self.generate_triplets()
 
         with ProcessPoolExecutor(max_workers=num_workers) as pool:
