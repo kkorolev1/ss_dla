@@ -108,7 +108,7 @@
     "early_stop": 100,
     "visualize": "wandb",
     "wandb_project": "ss_project",
-    "wandb_run_name": "spex_plus_finetune_first_run",
+    "wandb_run_name": "spex_plus_new_dataset",
     "len_epoch": 2500,
     "grad_norm_clip": 100,
     "fine_tune": false,
