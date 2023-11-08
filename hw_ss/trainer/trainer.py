@@ -58,6 +58,7 @@ class Trainer(BaseTrainer):
         self.fine_tune = config["trainer"].get("fine_tune", False)
         self.scheduler_config = config["trainer"].get("scheduler", None)
         self.grad_accum_iters = config["trainer"].get("grad_accum_iters", 1)
+        self.eval_start_iter = config["trainer"].get("eval_start_iter", 10000)
 
         if config.resume is not None:
             self._resume_checkpoint(config.resume)
@@ -163,14 +164,16 @@ class Trainer(BaseTrainer):
             if batch_idx >= self.len_epoch:
                 break
         log = last_train_metrics
-
-        for part, dataloader in self.evaluation_dataloaders.items():
-            val_log = self._evaluation_epoch(epoch, part, dataloader)
-            log.update(**{f"{part}_{name}": value for name, value in val_log.items()})
+        
+        if epoch * self.len_epoch >= self.eval_start_iter:
+            for part, dataloader in self.evaluation_dataloaders.items():
+                val_log = self._evaluation_epoch(epoch, part, dataloader)
+                log.update(**{f"{part}_{name}": value for name, value in val_log.items()})
 
         if self.lr_scheduler is not None and self.scheduler_config.get("epoch_based", False):
             if self.scheduler_config.get("requires_loss", True):
-                self.lr_scheduler.step(log["val_loss"])
+                if "val_loss" in log:
+                    self.lr_scheduler.step(log["val_loss"])
             else:
                 self.lr_scheduler.step()
 

@@ -108,14 +108,15 @@
     "early_stop": 100,
     "visualize": "wandb",
     "wandb_project": "ss_project",
-    "wandb_run_name": "spex_plus_calc_metric",
-    "len_epoch": 1,
+    "wandb_run_name": "spex_plus_finetune_first_run",
+    "len_epoch": 2500,
     "grad_norm_clip": 100,
     "fine_tune": false,
     "scheduler": {
       "requires_loss": true,
       "epoch_based": true
     },
-    "grad_accum_iters": 1
+    "grad_accum_iters": 1,
+    "eval_start_iter": 10000
   }
 }
