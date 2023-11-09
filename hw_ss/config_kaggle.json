@@ -100,8 +100,8 @@
     "early_stop": 100,
     "visualize": "wandb",
     "wandb_project": "ss_project",
-    "wandb_run_name": "spex_plus_calc_metrics",
-    "len_epoch": 1,
+    "wandb_run_name": "spex_plus_fine_tune_new_dataset",
+    "len_epoch": 2500,
     "grad_norm_clip": 100,
     "fine_tune": false,
     "scheduler": {
