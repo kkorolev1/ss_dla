@@ -133,6 +133,6 @@
       "epoch_based": true
     },
     "grad_accum_iters": 1,
-    "eval_start_iter": 10000
+    "eval_start_iter": 0
   }
 }
