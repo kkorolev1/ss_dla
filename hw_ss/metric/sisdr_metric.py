@@ -14,4 +14,4 @@ class SISDRMetric(BaseMetric):
 
     def __call__(self, mix_short: Tensor, target: Tensor, **kwargs):
         metric = self.si_sdr.to(mix_short.device)
-        return metric(mix_short, target)
+        return metric(mix_short, target).item()

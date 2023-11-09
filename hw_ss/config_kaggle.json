@@ -53,6 +53,22 @@
           }
         }
       ]
+    },
+    "test": {
+      "batch_size": 3,
+      "num_workers": 5,
+      "datasets": [
+        {
+          "type": "LibrispeechMixesDataset",
+          "args": {
+            "part": "test-clean",
+            "mixer": {
+              "index_path": "/kaggle/working/ss_dla/old-test-clean-mixed-index.json",
+              "out_folder": "/kaggle/input/librispeech-mixed-old-test/test-clean-mixed"
+            }
+          }
+        }
+      ]
     }
   },
   "optimizer": {
@@ -108,8 +124,8 @@
     "early_stop": 100,
     "visualize": "wandb",
     "wandb_project": "ss_project",
-    "wandb_run_name": "spex_plus_new_dataset",
-    "len_epoch": 2500,
+    "wandb_run_name": "spex_plus_calc_metrics",
+    "len_epoch": 1,
     "grad_norm_clip": 100,
     "fine_tune": false,
     "scheduler": {

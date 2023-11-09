@@ -14,4 +14,4 @@ class PESQMetric(BaseMetric):
 
     def __call__(self, mix_short: Tensor, target: Tensor, **kwargs):
         metric = self.pesq.to(mix_short.device)
-        return metric(normalize_audio(mix_short), target).mean()
+        return metric(normalize_audio(mix_short), target).mean().item()
