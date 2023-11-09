@@ -48,24 +48,7 @@
             "part": "test-clean",
             "mixer": {
               "index_path": "/kaggle/working/ss_dla/test-clean-mixed-index.json",
-              "out_folder": "/kaggle/input/librispeech-mixed/librispeech-mixed/test-clean-mixed"
-            }
-          }
-        }
-      ]
-    },
-    "test": {
-      "batch_size": 3,
-      "num_workers": 5,
-      "datasets": [
-        {
-          "type": "LibrispeechMixesDataset",
-          "args": {
-            "part": "test-clean",
-            "limit": 1000,
-            "mixer": {
-              "index_path": "/kaggle/working/ss_dla/old-test-clean-mixed-index.json",
-              "out_folder": "/kaggle/input/librispeech-mixed-old-test/test-clean-mixed"
+              "out_folder": "/kaggle/input/librispeech-mixed-vtest/test_clean"
             }
           }
         }
