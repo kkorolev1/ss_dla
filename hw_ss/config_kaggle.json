@@ -39,7 +39,7 @@
       ]
     },
     "val": {
-      "batch_size": 3,
+      "batch_size": 1,
       "num_workers": 5,
       "datasets": [
         {
@@ -48,7 +48,7 @@
             "part": "test-clean",
             "mixer": {
               "index_path": "/kaggle/working/ss_dla/test-clean-mixed-index.json",
-              "out_folder": "/kaggle/input/librispeech-mixed-vtest/test_clean"
+              "out_folder": "/kaggle/input/librispeech-mixed/librispeech-mixed/test-clean-mixed"
             }
           }
         }
@@ -100,8 +100,8 @@
     "early_stop": 100,
     "visualize": "wandb",
     "wandb_project": "ss_project",
-    "wandb_run_name": "spex_plus_finetune_cont_first_run",
-    "len_epoch": 2000,
+    "wandb_run_name": "spex_plus_calc_metrics",
+    "len_epoch": 1,
     "grad_norm_clip": 100,
     "fine_tune": false,
     "scheduler": {
