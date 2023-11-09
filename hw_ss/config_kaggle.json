@@ -79,14 +79,6 @@
       "args": {
         "name": "Head Accuracy"
       }
-    },
-    {
-      "type": "PESQMetric",
-      "args": {
-        "name": "PESQ",
-        "sample_rate": 16000,
-        "mode": "wb"
-      }
     }
   ],
   "lr_scheduler": {
@@ -108,8 +100,8 @@
     "early_stop": 100,
     "visualize": "wandb",
     "wandb_project": "ss_project",
-    "wandb_run_name": "spex_plus_calc_metrics",
-    "len_epoch": 1,
+    "wandb_run_name": "spex_plus_finetune_cont_first_run",
+    "len_epoch": 2000,
     "grad_norm_clip": 100,
     "fine_tune": false,
     "scheduler": {
