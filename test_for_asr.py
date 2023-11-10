@@ -44,7 +44,8 @@ def main(config, output_data_folder):
     model = model.to(device)
     model.eval()
 
-    os.makedirs(output_data_folder, exist_ok=True)
+    os.makedirs(os.path.join(output_data_folder, "audio"), exist_ok=True)
+    os.makedirs(os.path.join(output_data_folder, "transcriptions"), exist_ok=True)
 
     # batch_size=1 is assumed
     with torch.no_grad():
@@ -53,7 +54,7 @@ def main(config, output_data_folder):
             output = model(**batch)
             batch.update(output)
             pred_audio = normalize_audio(batch["mix_short"]).squeeze(0)
-            text_path = Path(batch["text"])
+            text_path = Path(batch["text"][0])
             data_path = text_path.stem
             torchaudio.save(os.path.join(output_data_folder, "audio", f"{data_path}.wav"), pred_audio, sample_rate=16000)
             shutil.copy(text_path, os.path.join(output_data_folder, "transcriptions", f"{data_path}.txt"))

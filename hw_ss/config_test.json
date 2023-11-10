@@ -23,6 +23,22 @@
     }
   },
   "data": {
+    "test": {
+      "batch_size": 1,
+      "num_workers": 5,
+      "datasets": [
+        {
+          "type": "LibrispeechMixesDataset",
+          "args": {
+            "part": "test-clean",
+            "mixer": {
+              "out_folder": "data/datasets/librispeech/test-clean-ss-asr",
+              "with_text": true
+            }
+          }
+        }
+      ]
+    }
   },
   "optimizer": {
     "type": "AdamW",
