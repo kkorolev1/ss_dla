@@ -98,21 +98,32 @@ class LibrispeechMixesDataset(BaseDataset):
         targets = np.array(sorted(glob(os.path.join(mixes_out_folder, '*-target.wav'))), dtype=object)
         speaker_ids = np.array([int(ref.split("/")[-1].split("_")[0]) for ref in refs])
         
+        with_text = mixer_config.get("with_text", False)
+        if with_text:
+            texts = np.array(sorted(glob(os.path.join(mixes_out_folder, '*.txt'))), dtype=object)
+
         sorted_indices = speaker_ids.argsort()
         refs = refs[sorted_indices]
         mixes = mixes[sorted_indices]
         targets = targets[sorted_indices]
         speaker_ids = speaker_ids[sorted_indices]
         speaker_ids_mapped = [0] + np.cumsum((speaker_ids[1:] > speaker_ids[:-1]).astype(int)).tolist()
-
+        if with_text:
+            texts = texts[sorted_indices]
+        
+        if with_text:
+            zipped_data = zip(refs, mixes, targets, speaker_ids_mapped, texts)
+        else:
+            zipped_data = zip(refs, mixes, targets, speaker_ids_mapped)
         index = []
-        for ref, mix, target, speaker_id in zip(refs, mixes, targets, speaker_ids_mapped):
-            index.append(
-                {
-                    "reference": ref,
-                    "mix": mix,
-                    "target": target,
-                    "speaker_id": speaker_id
-                }
-            )
+        for tuple in zipped_data:
+            index_row = {
+                "reference": tuple[0],
+                "mix": tuple[1],
+                "target": tuple[2],
+                "speaker_id": tuple[3]
+            }
+            if with_text:
+                index_row["text"] = tuple[-1]
+            index.append(index_row)
         return index

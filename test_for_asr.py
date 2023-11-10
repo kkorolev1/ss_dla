@@ -2,6 +2,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import shutil
 
 import torch
 import torchaudio
@@ -52,7 +53,10 @@ def main(config, output_data_folder):
             output = model(**batch)
             batch.update(output)
             pred_audio = normalize_audio(batch["mix_short"]).squeeze(0)
-            torchaudio.save(os.path.join(output_data_folder, f"{batch_num}.wav"), pred_audio, sample_rate=16000)
+            text_path = Path(batch["text"])
+            data_path = text_path.stem
+            torchaudio.save(os.path.join(output_data_folder, "audio", f"{data_path}.wav"), pred_audio, sample_rate=16000)
+            shutil.copy(text_path, os.path.join(output_data_folder, "transcriptions", f"{data_path}.txt"))
             break
 
 

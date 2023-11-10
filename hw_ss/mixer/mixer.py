@@ -124,16 +124,16 @@ class MixtureGenerator:
                     print(f"Files Processed | {i + 1} out of {self.nfiles}")
 
 
-speakers_files = collect_speakers_files("/home/korolevki/ss_dla/data/datasets/librispeech/test-clean", "*.flac", with_text=False)
-out_folder = "/home/korolevki/ss_dla/data/datasets/librispeech/dummy-test"
+# speakers_files = collect_speakers_files("/home/korolevki/ss_dla/data/datasets/librispeech/test-clean", "*.flac", with_text=True)
+# out_folder = "data/datasets/librispeech/test-clean-ss-asr"
 
-mixer = MixtureGenerator(speakers_files, out_folder, nfiles=10, test=True, with_text=False)
+# mixer = MixtureGenerator(speakers_files, out_folder, nfiles=1000, test=True, with_text=True)
 
-mixer.generate_mixes(
-    snr_levels=[0],
-    num_workers=2,
-    update_steps=100,
-    trim_db=None,
-    vad_db=20,
-    audioLen=3
-)
+# mixer.generate_mixes(
+#     snr_levels=[0],
+#     num_workers=2,
+#     update_steps=100,
+#     trim_db=None,
+#     vad_db=20,
+#     audioLen=3
+# )
