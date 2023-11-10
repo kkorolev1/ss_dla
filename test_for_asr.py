@@ -19,7 +19,7 @@ from hw_ss.utils import normalize_audio
 DEFAULT_CHECKPOINT_PATH = ROOT_PATH / "default_test_model" / "checkpoint.pth"
 
 
-def main(config, output_data_folder):
+def main(config, predictions_data_folder, targets_data_folder):
     logger = config.get_logger("test")
 
     # define cpu or gpu if possible
@@ -44,8 +44,11 @@ def main(config, output_data_folder):
     model = model.to(device)
     model.eval()
 
-    os.makedirs(os.path.join(output_data_folder, "audio"), exist_ok=True)
-    os.makedirs(os.path.join(output_data_folder, "transcriptions"), exist_ok=True)
+    os.makedirs(os.path.join(predictions_data_folder, "audio"), exist_ok=True)
+    os.makedirs(os.path.join(predictions_data_folder, "transcriptions"), exist_ok=True)
+
+    os.makedirs(os.path.join(targets_data_folder, "audio"), exist_ok=True)
+    os.makedirs(os.path.join(targets_data_folder, "transcriptions"), exist_ok=True)
 
     # batch_size=1 is assumed
     with torch.no_grad():
@@ -56,8 +59,10 @@ def main(config, output_data_folder):
             pred_audio = normalize_audio(batch["mix_short"]).squeeze(0)
             text_path = Path(batch["text"][0])
             data_path = text_path.stem
-            torchaudio.save(os.path.join(output_data_folder, "audio", f"{data_path}.wav"), pred_audio, sample_rate=16000)
-            shutil.copy(text_path, os.path.join(output_data_folder, "transcriptions", f"{data_path}.txt"))
+            torchaudio.save(os.path.join(predictions_data_folder, "audio", f"{data_path}.wav"), pred_audio, sample_rate=16000)
+            shutil.copy(text_path, os.path.join(predictions_data_folder, "transcriptions", f"{data_path}.txt"))
+            torchaudio.save(os.path.join(targets_data_folder, "audio", f"{data_path}.wav"), batch["target"].squeeze(0), sample_rate=16000)
+            shutil.copy(text_path, os.path.join(targets_data_folder, "transcriptions", f"{data_path}.txt"))
             break
 
 
@@ -92,11 +97,18 @@ if __name__ == "__main__":
         help="Path to dataset",
     )
     args.add_argument(
-        "-o",
-        "--output-data-folder",
+        "-p",
+        "--predictions-data-folder",
         default=None,
         type=str,
         help="Path to save predictions of SS for ASR",
+    )
+    args.add_argument(
+        "-o",
+        "--targets-data-folder",
+        default=None,
+        type=str,
+        help="Path to save targets for ASR",
     )
     args.add_argument(
         "-j",
@@ -149,4 +161,4 @@ if __name__ == "__main__":
     config["data"]["test"]["batch_size"] = 1
     config["data"]["test"]["n_jobs"] = args.jobs
 
-    main(config, args.output_data_folder)
+    main(config, args.predictions_data_folder, args.targets_data_folder)
