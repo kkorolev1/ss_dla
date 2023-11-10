@@ -1,6 +1,6 @@
-# ASR HW 1
+# SS HW 2
 
-Automatic Speech Recognition task using Conformel model trained on Librispeech.
+Source separation task using SpEx+ model trained on mixes based on Librispeech speakers. The task was to separate two speakers with a reference audio of a target speaker.
 
 ## Installation guide
 
@@ -8,15 +8,12 @@ Automatic Speech Recognition task using Conformel model trained on Librispeech.
 pip install -r ./requirements.txt
 ```
 
-Download 3-gram.arpa and vocab from https://www.openslr.org/11/. To use them change kenlm_path and vocab_path in config.json.
-
 ## Training
 ```shell
 python train.py -c CONFIG
 ```
-Check hw_asr for config examples
 
 ## Testing
 ```shell
-python test.py -c CONFIG -r CHECKPOINT
+python test.py -c CONFIG -r CHECKPOINT -t TEST_DIRECTORY
 ```
