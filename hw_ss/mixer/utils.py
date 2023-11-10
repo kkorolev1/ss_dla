@@ -63,7 +63,7 @@ def fix_length(s1, s2, min_or_max='max'):
     return s1, s2
 
 
-def create_mix(idx, triplet, snr_levels, out_dir, test=False, sr=16000, **kwargs):
+def create_mix(idx, triplet, snr_levels, out_dir, test=False, with_text=False, sr=16000, **kwargs):
     trim_db, vad_db = kwargs["trim_db"], kwargs["vad_db"]
     audioLen = kwargs["audioLen"]
 
@@ -72,6 +72,9 @@ def create_mix(idx, triplet, snr_levels, out_dir, test=False, sr=16000, **kwargs
     ref_path = triplet["reference"]
     target_id = triplet["target_id"]
     noise_id = triplet["noise_id"]
+
+    if with_text:
+        text = triplet["text"]
 
     # Reading triplet files
     s1, _ = sf.read(os.path.join('', s1_path))
@@ -109,6 +112,8 @@ def create_mix(idx, triplet, snr_levels, out_dir, test=False, sr=16000, **kwargs
     path_mix = os.path.join(out_dir, f"{target_id}_{noise_id}_" + "%06d" % idx + "-mixed.wav")
     path_target = os.path.join(out_dir, f"{target_id}_{noise_id}_" + "%06d" % idx + "-target.wav")
     path_ref = os.path.join(out_dir, f"{target_id}_{noise_id}_" + "%06d" % idx + "-ref.wav")
+    if with_text:
+        path_text = os.path.join(out_dir, f"{target_id}_{noise_id}_" + "%06d" % idx + ".txt")
 
     # Choose desired snr level for noise
     # Use as an augmentation
@@ -151,3 +156,6 @@ def create_mix(idx, triplet, snr_levels, out_dir, test=False, sr=16000, **kwargs
         sf.write(path_mix, mix, sr)
         sf.write(path_target, s1, sr)
         sf.write(path_ref, ref, sr)
+        if with_text:
+            with open(path_text, "w+") as f:
+                f.write(text)
