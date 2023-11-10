@@ -23,42 +23,6 @@
     }
   },
   "data": {
-    "train": {
-      "batch_size": 3,
-      "num_workers": 5,
-      "datasets": [
-        {
-          "type": "LibrispeechMixesDataset",
-          "args": {
-            "part": "train-clean-100",
-            "limit": 3,
-            "mixer": {
-              "nfiles": 7000,
-              "test": false,
-              "snr_levels": [-5, 0, 5]
-            }
-          }
-        }
-      ]
-    },
-    "val": {
-      "batch_size": 3,
-      "num_workers": 5,
-      "datasets": [
-        {
-          "type": "LibrispeechMixesDataset",
-          "args": {
-            "part": "test-clean",
-            "limit": 3,
-            "mixer": {
-              "nfiles": 1000,
-              "test": true,
-              "snr_levels": [0]
-            }
-          }
-        }
-      ]
-    }
   },
   "optimizer": {
     "type": "AdamW",
@@ -77,12 +41,6 @@
       "type": "SISDRMetric",
       "args": {
         "name": "SI-SDR"
-      }
-    },
-    {
-      "type": "AccuracyMetric",
-      "args": {
-        "name": "Head Accuracy"
       }
     },
     {
