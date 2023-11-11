@@ -71,28 +71,28 @@
     {
       "type": "SISDRMetric",
       "args": {
-        "name": "SI-SDR",
+        "name": "SI-SDR (short)",
         "pred": "short" 
       }
     },
     {
       "type": "SISDRMetric",
       "args": {
-        "name": "SI-SDR",
+        "name": "SI-SDR (middle)",
         "pred": "middle" 
       }
     },
     {
       "type": "SISDRMetric",
       "args": {
-        "name": "SI-SDR",
+        "name": "SI-SDR (long)",
         "pred": "long" 
       }
     },
     {
       "type": "SISDRMetric",
       "args": {
-        "name": "SI-SDR",
+        "name": "SI-SDR (all)",
         "pred": "all" 
       }
     }
