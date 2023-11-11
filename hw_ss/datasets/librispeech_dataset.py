@@ -86,7 +86,7 @@ class LibrispeechMixesDataset(BaseDataset):
 
     def _create_index(self, part, mixer_config):
         mixes_out_folder = Path(mixer_config.get("out_folder", self._data_dir / f"{part}-mixed"))
-        logger.info("mixes folder f{mixes_out_folder}")
+        logger.info(f"mixes folder {mixes_out_folder}")
         if not mixes_out_folder.exists():
             split_dir = self._data_dir / part
             # Download Librispeech if it doesn't exist
