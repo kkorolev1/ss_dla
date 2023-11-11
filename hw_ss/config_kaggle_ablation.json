@@ -119,7 +119,7 @@
     "wandb_run_name": "spex_plus_ablation_study",
     "len_epoch": 1,
     "grad_norm_clip": 100,
-    "fine_tune": true,
+    "fine_tune": false,
     "scheduler": {
       "requires_loss": true,
       "epoch_based": true
