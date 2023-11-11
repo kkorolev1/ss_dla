@@ -121,7 +121,7 @@ def create_mix(idx, triplet, snr_levels, out_dir, test=False, with_text=False, s
 
     if not test:
         # Remove silence
-        s1, s2 = vad_merge(s1, vad_db), vad_merge(s2, vad_db)
+        #s1, s2 = vad_merge(s1, vad_db), vad_merge(s2, vad_db)
         # Cut by audioLen chunks
         s1_cut, s2_cut = cut_audios(s1, s2, audioLen, sr)
 

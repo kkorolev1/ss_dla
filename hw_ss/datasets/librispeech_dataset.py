@@ -78,7 +78,7 @@ class LibrispeechMixesDataset(BaseDataset):
             snr_levels=mixer_config.get("snr_levels", [-5, 5]),
             num_workers=mixer_config.get("num_workers", 2),
             update_steps=100,
-            trim_db=mixer_config.get("trim_db", 20) if not test else None,
+            trim_db=mixer_config.get("trim_db", None),
             vad_db=mixer_config.get("vad_db", 20),
             audioLen=mixer_config.get("audioLen", 3)
         )

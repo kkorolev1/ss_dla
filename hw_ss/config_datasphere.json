@@ -30,27 +30,25 @@
           "type": "LibrispeechMixesDataset",
           "args": {
             "part": "train-clean-100",
-            "limit": 10000,
             "mixer": {
               "index_path": "train-clean-100-mixed-index.json",
-              "out_folder": "/home/jupyter/mnt/datasets/librispeech-mixed/librispeech-mixed/librispeech-mixed/train-clean-100-mixed"
+              "out_folder": "/home/jupyter/mnt/datasets/librispeech-mixes/librispeech-mixes/train-clean-100-mixed"
             }
           }
         }
       ]
     },
     "val": {
-      "batch_size": 5,
+      "batch_size": 1,
       "num_workers": 5,
       "datasets": [
         {
           "type": "LibrispeechMixesDataset",
           "args": {
             "part": "test-clean",
-            "limit": 1000,
             "mixer": {
               "index_path": "test-clean-mixed-index.json",
-              "out_folder": "/home/jupyter/mnt/datasets/librispeech-mixed/librispeech-mixed/librispeech-mixed/test-clean-mixed"
+              "out_folder": "/home/jupyter/mnt/datasets/librispeech-mixes/librispeech-mixes/test-clean-mixed"
             }
           }
         }
@@ -75,20 +73,6 @@
       "args": {
         "name": "SI-SDR"
       }
-    },
-    {
-      "type": "AccuracyMetric",
-      "args": {
-        "name": "Head Accuracy"
-      }
-    },
-    {
-      "type": "PESQMetric",
-      "args": {
-        "name": "PESQ",
-        "sample_rate": 16000,
-        "mode": "wb"
-      }
     }
   ],
   "lr_scheduler": {
@@ -110,14 +94,15 @@
     "early_stop": 100,
     "visualize": "wandb",
     "wandb_project": "ss_project",
-    "wandb_run_name": "spex_plus_long_epoch",
-    "len_epoch": 10000,
+    "wandb_run_name": "spex_plus_fine_tune_with_silence",
+    "len_epoch": 1500,
     "grad_norm_clip": 100,
     "fine_tune": false,
     "scheduler": {
       "requires_loss": true,
       "epoch_based": true
     },
-    "grad_accum_iters": 2
+    "grad_accum_iters": 1,
+    "eval_start_iter": 0
   }
 }
