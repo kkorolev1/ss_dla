@@ -63,7 +63,6 @@ def main(config, predictions_data_folder, targets_data_folder):
             shutil.copy(text_path, os.path.join(predictions_data_folder, "transcriptions", f"{data_path}.txt"))
             torchaudio.save(os.path.join(targets_data_folder, "audio", f"{data_path}.wav"), batch["target"].squeeze(0), sample_rate=16000)
             shutil.copy(text_path, os.path.join(targets_data_folder, "transcriptions", f"{data_path}.txt"))
-            break
 
 
 if __name__ == "__main__":
