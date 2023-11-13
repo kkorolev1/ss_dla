@@ -56,12 +56,12 @@ def main(config, predictions_data_folder, targets_data_folder):
             batch = Trainer.move_batch_to_device(batch, device)
             output = model(**batch)
             batch.update(output)
-            pred_audio = normalize_audio(batch["mix_short"]).squeeze(0)
+            pred_audio = normalize_audio(batch["mix_short"]).squeeze(0).detach().cpu()
             text_path = Path(batch["text"][0])
             data_path = text_path.stem
             torchaudio.save(os.path.join(predictions_data_folder, "audio", f"{data_path}.wav"), pred_audio, sample_rate=16000)
             shutil.copy(text_path, os.path.join(predictions_data_folder, "transcriptions", f"{data_path}.txt"))
-            torchaudio.save(os.path.join(targets_data_folder, "audio", f"{data_path}.wav"), batch["target"].squeeze(0), sample_rate=16000)
+            torchaudio.save(os.path.join(targets_data_folder, "audio", f"{data_path}.wav"), batch["target"].squeeze(0).detach().cpu(), sample_rate=16000)
             shutil.copy(text_path, os.path.join(targets_data_folder, "transcriptions", f"{data_path}.txt"))
 
 
