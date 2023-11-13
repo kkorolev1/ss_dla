@@ -1,0 +1,102 @@
+{
+  "name": "default_config",
+  "n_gpu": 0,
+  "preprocessing": {
+    "sr": 16000,
+    "spectrogram": {
+      "type": "MelSpectrogram",
+      "args": {
+      }
+    },
+    "log_spec": true
+  },
+  "augmentations": {
+    "wave": [
+    ],
+    "spectrogram": [
+    ]
+  },
+  "arch": {
+    "type": "SpexPlus",
+    "args": {
+      "num_speakers": 251
+    }
+  },
+  "data": {
+    "test": {
+      "batch_size": 1,
+      "num_workers": 5,
+      "datasets": [
+        {
+          "type": "LibrispeechMixesDataset",
+          "args": {
+            "part": "test-clean",
+            "mixer": {
+              "index_path": "/kaggle/working/ss_dla/ss-asr-index.json",
+              "out_folder": "/kaggle/input/test-clean-ss-asr",
+              "with_text": true
+            }
+          }
+        }
+      ]
+    }
+  },
+  "optimizer": {
+    "type": "AdamW",
+    "args": {
+      "lr": 1e-3,
+      "weight_decay": 1e-5
+    }
+  },
+  "loss": {
+    "type": "SpexPlusLoss",
+    "args": {
+    }
+  },
+  "metrics": [
+    {
+      "type": "SISDRMetric",
+      "args": {
+        "name": "SI-SDR"
+      }
+    },
+    {
+      "type": "PESQMetric",
+      "args": {
+        "name": "PESQ",
+        "sample_rate": 16000,
+        "mode": "wb"
+      }
+    }
+  ],
+  "lr_scheduler": {
+    "type": "ReduceLROnPlateau",
+    "args": {
+      "mode": "min",
+      "factor": 0.5,
+      "patience": 2,
+      "min_lr": 0.0,
+      "verbose": true
+    }
+  },
+  "trainer": {
+    "epochs": 40,
+    "save_dir": "saved/",
+    "save_period": 5,
+    "verbosity": 2,
+    "monitor": "min val_loss",
+    "early_stop": 100,
+    "visualize": "wandb",
+    "wandb_project": "ss_project",
+    "wandb_run_name": "test_py",
+    "len_epoch": 1,
+    "grad_norm_clip": 100,
+    "fine_tune": false,
+    "scheduler": {
+      "requires_loss": true,
+      "epoch_based": true
+    },
+    "grad_accum_iters": 1,
+    "eval_start_iter": 0
+  }
+}
