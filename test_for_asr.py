@@ -23,7 +23,7 @@ def main(config, predictions_data_folder, targets_data_folder):
     logger = config.get_logger("test")
 
     # define cpu or gpu if possible
-    device = torch.device("cpu") #torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # setup data_loader instances
     dataloaders = get_dataloaders(config)
